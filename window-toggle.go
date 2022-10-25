@@ -1,5 +1,5 @@
-// Program next-chrome-for-i3 focuses the chrome window on the current
-// workspace or starts a new chrome instance.
+// Program window-toggle-for-i3 focuses a window (based on its name) on the current
+// workspace or starts a new instance of it.
 package main
 
 import (
@@ -27,6 +27,11 @@ func logic() error {
 			"scope",
 			"workspace",
 			"workspace or root, specifies which child windows to match")
+
+		mark = flag.String(
+			"mark",
+			"__last__",
+			"Name of the mark used on the window before switching to target window")
 	)
 	flag.Parse()
 
@@ -48,6 +53,26 @@ func logic() error {
 		}
 	} else {
 		parent = tree.Root
+	}
+
+	focused := parent.FindChild(func(n *i3.Node) bool { return n.Focused })
+	if titleRe.MatchString(focused.Name) {
+
+		// If the target window is already focused, switch back to the window we
+		// were using before focusing the target window
+		_, err = i3.RunCommand(fmt.Sprintf("[con_mark=%s] focus", *mark))
+		return err
+
+	} else {
+
+		// Otherwise, mark the current window with a custom mark so we can switch
+		// back to it later
+		i3_cmd := fmt.Sprintf("mark %s", *mark)
+		_, err = i3.RunCommand(i3_cmd)
+		if err != nil {
+			return err
+		}
+
 	}
 
 	if chrome := parent.FindChild(func(n *i3.Node) bool { return titleRe.MatchString(n.Name) }); chrome != nil {

@@ -1,4 +1,4 @@
-module github.com/stapelberg/next-chrome-for-i3
+module github.com/sagittarius-a/window-toggle-for-i3
 
 go 1.14
 

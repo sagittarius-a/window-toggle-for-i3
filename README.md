@@ -1,15 +1,18 @@
-next-chrome-for-i3 focuses the chrome window on the current workspace or starts a new chrome instance.
+`window-toggle-for-i3` focuses a window (based on its name) on the current
+workspace or starts a new instance of it.
+
+Based on <https://github.com/stapelberg/next-chrome-for-i3>.
 
 ## Installation
 
 If you haven’t already, [install Go](https://golang.org/dl/).
 
 ```shell
-go get -u github.com/stapelberg/next-chrome-for-i3
+go get -u github.com/sagittarius-a/window-toggle-for-i3
 ```
 
 ## Usage
 
 ```shell
-next-chrome-for-i3
+window-toggle-for-i3
 ```
